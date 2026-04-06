@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                sh 'java -jar target/*.jar'
+            }
+        }
+    }
+    post {
+        success { echo 'Pipeline SUCCESS' }
+        failure { echo 'Pipeline FAILED' }
+    }
+}
